@@ -40,6 +40,7 @@ class InitialSetup extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('link_master');
+        Schema::dropIfExists('stats');
     }
 }

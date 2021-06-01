@@ -1,11 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\DB;
 
-class linkMaster extends Model
+class Links extends Model
 {
     protected $table = 'link_master' ; 
     protected $primary_key = 'id';
