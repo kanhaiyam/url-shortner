@@ -1,62 +1,68 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# URL Hash APP
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Hi!
+This is an API to generate a unique hash for every link.
 
-## About Laravel
+### Application Architecture
+The application is built on PHP using Laravel Framework and MySQL as Database.
+I decided to use Laravel because it is a very feature rich framework and I have use it whenever possible to teach myself some of the concepts of Laravel. 
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Prerequisite
+-   PHP >= 7.3
+-   OpenSSL PHP Extension
+-   PDO PHP Extension
+-   Mbstring PHP Extension
+-   Tokenizer PHP Extension
+-   XML PHP Extension
+-   Ctype PHP Extension
+-   JSON PHP Extension
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Setup Instruction
+ 1. Open Terminal. Navigate to the directory you want to work from.
+ 2. Clone this repository.
+ 3. Now in the cloned repository type **`composer install`** and install all the dependencies. The project already has a compoer.lock file. Please use that file.
+ 4. Now create a database a new database for the project with any name.
+ 5. Set/Change the **`APP_URL`** and other database related changes in **`.env`** file.
+ 6. Migrate the schema from app. Execute **`php artisan migrate`**
+ 7. Seed the database to create the users for the App. Execute **`php artisan db:seed`**
+ 8. Install the laravel/passport for API authentication. Execute **`php artisan passport:install`**
+ 9. Start the server with **`php artisan serve`**
+ 
+ *Any changes to the .env file will require a restart of the server*
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Register
+You can register yourself as a user of this portal via /api/register API
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+``` 
+curl --location --request POST '127.0.0.1:8000/api/register' \
+--form 'email="admin1@test.com"' \
+--form 'password="enigmaterm"' \
+--form 'password_confirmation="enigmaterm"' \
+--form 'name="Admin"'
+```
 
-## Laravel Sponsors
+### Login
+To create a short url you have to first login and get the API Token for it
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```
+curl --location --request POST '127.0.0.1:8000/api/login'  \
+--form 'email="admin@test.com"' \
+--form 'password="enigma"'
+```
 
-### Premium Partners
+From the response copy the **access_token** and click on the **Authorization** tab and select **Bearer Token** from the dropdown and paste the value of the **access_token** copied earlier:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
+### Sample Request For Link Generation
 
-## Contributing
+    curl --location --request POST '127.0.0.1:8000/api/link/generate' --header 'Content-Type: application/json'  --data-raw '{"link": "https://user-api.hirist.com/user/recruiter/73476/"}'
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Redirection
+- All redirection by the application will be **302 Redirect**.
+- To check if the link is working fine, you can try with *`ExampleLink`* from the Response.
+- To redirect using custom URL, point the custom URL to the project and make an entry in *`routes/web.php`*. Please refer the example in the comments and it will be working perfectly.
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Database 
+`link_master` - This table stores the link and the hash generated for the link.
+`stats` - This table has all the data regarding the user who click on the link.
