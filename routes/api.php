@@ -13,9 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
+Route::post('/register', 'App\Http\Controllers\API\authController@register');
+Route::post('/login', 'App\Http\Controllers\API\authController@login')->name('login');
 
-Route::post('link/create', 'App\Http\Controllers\shortnerController@create');
+Route::post('link/create', 'App\Http\Controllers\API\shortnerController@create')->middleware('auth:api');

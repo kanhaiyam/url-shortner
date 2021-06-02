@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
     {
         User::truncate();
 
-        $password = sha1('enigma');
+        $password = bcrypt('enigma');
 
         User::create([
             'name' => 'Administrator',

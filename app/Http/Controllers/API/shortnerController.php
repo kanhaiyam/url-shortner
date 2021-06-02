@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -64,11 +64,7 @@ class shortnerController extends Controller{
      */
 	private function generateHash(){
 		$id_temp = $this->linksModel->getNextID(); //Get next ID
-		$chars = [1,2,3,4,5,6,7,8,9,0,"a","b","c","d","e","f","g","h","i","j",
-				  "k","l","m","n","o","p","q","r","s","t","u","v","w","x","y",
-				  "z","A","B","C","D","E","F","G","H","I","J","K","L","M","N",
-				  "O","P","Q","R","S","T","U","V","W","X","Y","Z"
-				  ]; //character set for hash
+		$chars = str_split('BNqfzRkpWZsFoV5SUEy46Mgj1vLGmwQH87rd0blaeAnIhYu3cTDJCXKix2t9PO');//character set for hash
 
         $id = intval($id_temp);
         $length = count($chars);
